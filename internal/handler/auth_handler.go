@@ -27,9 +27,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	inputWallet := &dto.WalletRequestBody{}
-	inputWallet.UserID = int(newUser.ID)
-	newWallet, err := h.walletService.CreateWallet(inputWallet)
+	newWallet, err := h.walletService.CreateWallet(newUser)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
 		response := utils.ErrorResponse("register failed", statusCode, err.Error())

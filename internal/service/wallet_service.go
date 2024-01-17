@@ -9,7 +9,7 @@ import (
 
 type WalletService interface {
 	GetWalletByUserId(input *dto.WalletRequestBody) (*model.Wallet, error)
-	CreateWallet(input *dto.WalletRequestBody) (*model.Wallet, error)
+	CreateWallet(user *model.User) (*model.Wallet, error)
 }
 
 type walletService struct {
@@ -37,15 +37,7 @@ func (s *walletService) GetWalletByUserId(input *dto.WalletRequestBody) (*model.
 	return wallet, nil
 }
 
-func (s *walletService) CreateWallet(input *dto.WalletRequestBody) (*model.Wallet, error) {
-	user, err := s.userRepository.FindById(input.UserID)
-	if err != nil {
-		return &model.Wallet{}, err
-	}
-	if user.ID == 0 {
-		return &model.Wallet{}, &custom_error.UserNotFoundError{}
-	}
-
+func (s *walletService) CreateWallet(user *model.User) (*model.Wallet, error) {
 	wallet, err := s.walletRepository.FindByUserId(int(user.ID))
 	if err != nil {
 		return &model.Wallet{}, err
