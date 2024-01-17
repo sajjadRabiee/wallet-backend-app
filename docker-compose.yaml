@@ -3,7 +3,6 @@ version: "3.5"
 services:
   mysql:
     container_name: wallet_mysql
-    platform: linux/x86_64
     image: mysql:5.7
     ports:
       - "3306:3306"
@@ -25,6 +24,8 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    networks:
+      - wallet_default
 
 networks:
   wallet_default:

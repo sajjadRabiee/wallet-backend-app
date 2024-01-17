@@ -3,7 +3,7 @@ package service
 import (
 	"wallet/internal/dto"
 	"wallet/internal/model"
-	r "wallet/internal/repository"
+	"wallet/internal/repository"
 	"wallet/pkg/custom_error"
 	"wallet/pkg/utils"
 )
@@ -14,13 +14,13 @@ type WalletService interface {
 }
 
 type walletService struct {
-	userRepository   r.UserRepository
-	walletRepository r.WalletRepository
+	userRepository   repository.UserRepository
+	walletRepository repository.WalletRepository
 }
 
 type WSConfig struct {
-	UserRepository   r.UserRepository
-	WalletRepository r.WalletRepository
+	UserRepository   repository.UserRepository
+	WalletRepository repository.WalletRepository
 }
 
 func NewWalletService(c *WSConfig) WalletService {

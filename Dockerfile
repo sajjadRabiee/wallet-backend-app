@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine as builder
+FROM repo-afra.snappfood.dev/golang:1.19-alpine as builder
 WORKDIR /app/
 
 COPY go.mod ./
@@ -9,10 +9,11 @@ COPY . ./
 
 RUN go build -o ./e-wallet-api main.go
 
-FROM alpine:latest
+FROM repo-afra.snappfood.dev/alpine:latest
 WORKDIR /app
 COPY --from=builder /app/e-wallet-api ./
 COPY --from=builder /app/.env ./
+COPY --from=builder /app/pkg/swaggerui ./pkg/swaggerui
 
 ENV GIN_MODE=release
 
