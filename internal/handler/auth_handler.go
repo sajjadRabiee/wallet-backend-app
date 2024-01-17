@@ -8,13 +8,18 @@ import (
 	"wallet/pkg/utils"
 )
 
+const loginFailedMessage = "login failed"
+const registerFailedMessage = "register failed"
+const forgotPasswordFailedMessage = "forgot password failed"
+const resetPasswordFailedMessage = "reset password failed"
+
 func (h *Handler) Register(c *gin.Context) {
 	input := &dto.RegisterRequestBody{}
 
 	err := c.ShouldBindJSON(input)
 	if err != nil {
 		errors := utils.FormatValidationError(err)
-		response := utils.ErrorResponse("register failed", http.StatusUnprocessableEntity, errors)
+		response := utils.ErrorResponse(registerFailedMessage, http.StatusUnprocessableEntity, errors)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -22,7 +27,7 @@ func (h *Handler) Register(c *gin.Context) {
 	newUser, err := h.userService.CreateUser(input)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
-		response := utils.ErrorResponse("register failed", statusCode, err.Error())
+		response := utils.ErrorResponse(registerFailedMessage, statusCode, err.Error())
 		c.JSON(statusCode, response)
 		return
 	}
@@ -30,14 +35,14 @@ func (h *Handler) Register(c *gin.Context) {
 	newWallet, err := h.walletService.CreateWallet(newUser)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
-		response := utils.ErrorResponse("register failed", statusCode, err.Error())
+		response := utils.ErrorResponse(registerFailedMessage, statusCode, err.Error())
 		c.JSON(statusCode, response)
 		return
 	}
 
 	token, err := h.jwtService.GenerateToken(int(newUser.ID))
 	if err != nil {
-		response := utils.ErrorResponse("register failed", http.StatusInternalServerError, err.Error())
+		response := utils.ErrorResponse(registerFailedMessage, http.StatusInternalServerError, err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
@@ -53,7 +58,7 @@ func (h *Handler) Login(c *gin.Context) {
 	err := c.ShouldBindJSON(input)
 	if err != nil {
 		errors := utils.FormatValidationError(err)
-		response := utils.ErrorResponse("login failed", http.StatusUnprocessableEntity, errors)
+		response := utils.ErrorResponse(loginFailedMessage, http.StatusUnprocessableEntity, errors)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -61,7 +66,7 @@ func (h *Handler) Login(c *gin.Context) {
 	loggedinUser, err := h.authService.Attempt(input)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
-		response := utils.ErrorResponse("login failed", statusCode, err.Error())
+		response := utils.ErrorResponse(loginFailedMessage, statusCode, err.Error())
 		c.JSON(statusCode, response)
 		return
 	}
@@ -70,14 +75,14 @@ func (h *Handler) Login(c *gin.Context) {
 	inputWallet.UserID = int(loggedinUser.ID)
 	wallet, err := h.walletService.GetWalletByUserId(inputWallet)
 	if err != nil {
-		response := utils.ErrorResponse("login failed", http.StatusInternalServerError, err.Error())
+		response := utils.ErrorResponse(loginFailedMessage, http.StatusInternalServerError, err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	token, err := h.jwtService.GenerateToken(int(loggedinUser.ID))
 	if err != nil {
-		response := utils.ErrorResponse("login failed", http.StatusInternalServerError, err.Error())
+		response := utils.ErrorResponse(loginFailedMessage, http.StatusInternalServerError, err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
@@ -93,7 +98,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 	err := c.ShouldBindJSON(input)
 	if err != nil {
 		errors := utils.FormatValidationError(err)
-		response := utils.ErrorResponse("forgot password failed", http.StatusUnprocessableEntity, errors)
+		response := utils.ErrorResponse(forgotPasswordFailedMessage, http.StatusUnprocessableEntity, errors)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -101,7 +106,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 	passwordReset, err := h.authService.ForgotPass(input)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
-		response := utils.ErrorResponse("forgot password failed", statusCode, err.Error())
+		response := utils.ErrorResponse(forgotPasswordFailedMessage, statusCode, err.Error())
 		c.JSON(statusCode, response)
 		return
 	}
@@ -117,7 +122,7 @@ func (h *Handler) ResetPassword(c *gin.Context) {
 	err := c.ShouldBindJSON(input)
 	if err != nil {
 		errors := utils.FormatValidationError(err)
-		response := utils.ErrorResponse("reset password failed", http.StatusUnprocessableEntity, errors)
+		response := utils.ErrorResponse(resetPasswordFailedMessage, http.StatusUnprocessableEntity, errors)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -125,7 +130,7 @@ func (h *Handler) ResetPassword(c *gin.Context) {
 	passwordReset, err := h.authService.ResetPass(input)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
-		response := utils.ErrorResponse("reset password failed", statusCode, err.Error())
+		response := utils.ErrorResponse(resetPasswordFailedMessage, statusCode, err.Error())
 		c.JSON(statusCode, response)
 		return
 	}
