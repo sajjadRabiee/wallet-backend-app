@@ -4,7 +4,7 @@ info:
   description: |-
     This is a RESTful API of E-Wallet project. This project was built with golang, postgreSQL, and JWT authentication and implement clean architecture.
   contact:
-    email: nabilunited2@gmail.com
+    phone_number: +98123456789
   version: 1.0.0
 servers:
   - url: http://localhost:8080/api/v1
@@ -67,9 +67,9 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                phone_number:
                   type: string
-                  example: nabil@user.com
+                  example: +989123456789
       responses:
         '200':
           $ref: '#/components/responses/forgotPassword'
@@ -245,9 +245,9 @@ components:
         name:
           type: string
           example: brondol
-        email:
+        phone_number:
           type: string
-          example: user@example.com
+          example: +989123456789
         password:
           type: string
           example: "$2a$04$hTbw4uWH0ogTVWrA9dPbZOKeHNXpchzbCytwU2SLw2/rMCR8AwKpu"
@@ -344,10 +344,9 @@ components:
         name:
           type: string
           example: brondol
-        email:
+        phone_number:
           type: string
-          format: email
-          example: user@example.com
+          example: +989123456789
         wallet:
           type: string
           example: '100005'
@@ -374,14 +373,14 @@ components:
           schema:
             type: object
             properties:
-              email:
+              phone_number:
                 type: string
-                example: nabil@user.com
+                example: +989123456789
               password:
                 type: string
                 example: 12345
             required:
-              - email
+              - phone_number
               - password
     signUp:
       description: Request body for sign-up
@@ -390,9 +389,9 @@ components:
           schema:
             type: object
             properties:
-              email:
+              phone_number:
                 type: string
-                example: wawik@user.com
+                example: +98123456789
               name:
                 type: string
                 example: acong
@@ -400,7 +399,7 @@ components:
                 type: string
                 example: 12345
             required:
-              - email
+              - phone_number
               - password
               - name
               - phone
@@ -474,9 +473,9 @@ components:
               data:
                 type: object
                 properties:
-                  email:
+                  phone_number:
                     type: string
-                    example: nabil@user.com
+                    example: +989123456789
                   token:
                     type: string
                     example: M78iHCuRkD
@@ -498,9 +497,9 @@ components:
                   name:
                     type: string
                     example: brondol
-                  email:
+                  phone_number:
                     type: string
-                    example: nabil@user.com
+                    example: +989123456789
     profiles:
       description: get user detail success
       content:
@@ -519,9 +518,9 @@ components:
                   name:
                     type: string
                     example: brondol
-                  email:
+                  phone_number:
                     type: string
-                    example: nabil@user.com
+                    example: +989123456789
                   wallet:
                     type: object
                     properties:
@@ -804,7 +803,7 @@ components:
                 type: array
                 items:
                   type: string
-                example: ["Name required", "Email required"]
+                example: ["Name required", "phone_number required"]
     '5XX':
       description: unexpected error.
       content:

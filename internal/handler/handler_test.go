@@ -60,6 +60,6 @@ func MakeRequestBody(dto interface{}) *strings.Reader {
 }
 
 func MiddlewareMockUser(ctx *gin.Context) {
-	ctx.Set("user", &model.User{ID: 1, Name: "nabil", Email: "nabil@user.com"})
+	ctx.Set("user", &model.User{ID: 1, Name: "nabil", PhoneNumber: "+989123456789"})
 	ctx.Next()
 }

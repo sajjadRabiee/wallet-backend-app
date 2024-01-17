@@ -9,7 +9,7 @@ type UserRepository interface {
 	FindAll() ([]*model.User, error)
 	FindById(id int) (*model.User, error)
 	FindByName(name string) ([]*model.User, error)
-	FindByEmail(email string) (*model.User, error)
+	FindByPhoneNumber(phoneNumber string) (*model.User, error)
 	Save(user *model.User) (*model.User, error)
 	Update(user *model.User) (*model.User, error)
 }
@@ -61,10 +61,10 @@ func (r *userRepository) FindByName(name string) ([]*model.User, error) {
 	return users, nil
 }
 
-func (r *userRepository) FindByEmail(email string) (*model.User, error) {
+func (r *userRepository) FindByPhoneNumber(phoneNumber string) (*model.User, error) {
 	var user *model.User
 
-	err := r.db.Where("email = ?", email).Find(&user).Error
+	err := r.db.Where("phone_number = ?", phoneNumber).Find(&user).Error
 	if err != nil {
 		return user, err
 	}

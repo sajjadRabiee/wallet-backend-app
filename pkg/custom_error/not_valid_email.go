@@ -1,8 +1,8 @@
 package custom_error
 
-type NotValidEmailError struct {
+type NotValidPhoneNumberError struct {
 }
 
-func (e *NotValidEmailError) Error() string {
-	return "not a valid email"
+func (e *NotValidPhoneNumberError) Error() string {
+	return "not a valid phone_number"
 }

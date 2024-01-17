@@ -58,9 +58,9 @@ func TestHandler_Profile(t *testing.T) {
 				Status:  "success",
 			},
 			Data: map[string]interface{}{
-				"id":    float64(1),
-				"name":  "nabil",
-				"email": "nabil@user.com",
+				"id":           float64(1),
+				"name":         "nabil",
+				"phone_number": "+989123456789",
 				"wallet": map[string]interface{}{
 					"id":      float64(1),
 					"number":  "100001",
