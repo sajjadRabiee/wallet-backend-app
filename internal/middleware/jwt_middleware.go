@@ -45,8 +45,9 @@ func AuthMiddleware(jwtService s.JWTService, userService s.UserService) gin.Hand
 
 		userID := int(payload["user_id"].(float64))
 
-		params := &dto.UserRequestParams{}
-		params.UserID = userID
+		params := &dto.UserRequestParams{
+			UserID: userID,
+		}
 		user, err := userService.GetUser(params)
 		if err != nil {
 			response := utils.ErrorResponse("Unauthorized", http.StatusUnauthorized, err.Error())

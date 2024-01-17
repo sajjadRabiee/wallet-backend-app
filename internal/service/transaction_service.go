@@ -2,7 +2,6 @@ package service
 
 import (
 	"strconv"
-
 	"wallet/internal/dto"
 	"wallet/internal/model"
 	"wallet/internal/repository"
@@ -65,7 +64,10 @@ func (s *transactionService) TopUp(input *dto.TopUpRequestBody) (*model.Transact
 
 	transaction := &model.Transaction{
 		SourceOfFundID: &sourceOfFund.ID,
+		SourceOfFund:   sourceOfFund,
 		UserID:         input.User.ID,
+		User:           *input.User,
+		Wallet:         *wallet,
 		DestinationID:  wallet.ID,
 		Amount:         input.Amount,
 		Description:    "Top Up from " + sourceOfFund.Name,
@@ -82,10 +84,6 @@ func (s *transactionService) TopUp(input *dto.TopUpRequestBody) (*model.Transact
 	if err != nil {
 		return transaction, err
 	}
-
-	transaction.SourceOfFund = sourceOfFund
-	transaction.User = *input.User
-	transaction.Wallet = *wallet
 
 	return transaction, nil
 }
