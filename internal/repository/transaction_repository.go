@@ -31,8 +31,8 @@ func (r *transactionRepository) FindAll(userID int, query *dto.TransactionReques
 
 	offset := (query.Page - 1) * query.Limit
 	orderBy := query.SortBy + " " + query.Sort
-	queryBuider := r.db.Limit(query.Limit).Offset(offset).Order(orderBy)
-	err := queryBuider.Where("user_id = ?", userID).Where("description ILIKE ?", "%"+query.Search+"%").Preload("SourceOfFund").
+	queryBuilder := r.db.Limit(query.Limit).Offset(offset).Order(orderBy)
+	err := queryBuilder.Where("user_id = ?", userID).Where("description LIKE ?", "%"+query.Search+"%").Preload("SourceOfFund").
 		Preload("User").Preload("Wallet.User").Find(&transactions).Error
 	if err != nil {
 		return transactions, err

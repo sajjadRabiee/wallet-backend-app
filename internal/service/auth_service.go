@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"wallet/internal/dto"
 	"wallet/internal/model"
-	r "wallet/internal/repository"
+	"wallet/internal/repository"
 	"wallet/pkg/custom_error"
 	"wallet/pkg/utils"
 )
@@ -19,13 +19,13 @@ type AuthService interface {
 }
 
 type authService struct {
-	userRepository          r.UserRepository
-	passwordResetRepository r.PasswordResetRepository
+	userRepository          repository.UserRepository
+	passwordResetRepository repository.PasswordResetRepository
 }
 
 type ASConfig struct {
-	UserRepository          r.UserRepository
-	PasswordResetRepository r.PasswordResetRepository
+	UserRepository          repository.UserRepository
+	PasswordResetRepository repository.PasswordResetRepository
 }
 
 func NewAuthService(c *ASConfig) AuthService {

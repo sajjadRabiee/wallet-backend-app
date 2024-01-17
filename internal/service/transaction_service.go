@@ -5,7 +5,7 @@ import (
 
 	"wallet/internal/dto"
 	"wallet/internal/model"
-	r "wallet/internal/repository"
+	"wallet/internal/repository"
 	"wallet/pkg/custom_error"
 )
 
@@ -17,15 +17,15 @@ type TransactionService interface {
 }
 
 type transactionService struct {
-	transactionRepository  r.TransactionRepository
-	walletRepository       r.WalletRepository
-	sourceOfFundRepository r.SourceOfFundRepository
+	transactionRepository  repository.TransactionRepository
+	walletRepository       repository.WalletRepository
+	sourceOfFundRepository repository.SourceOfFundRepository
 }
 
 type TSConfig struct {
-	TransactionRepository  r.TransactionRepository
-	WalletRepository       r.WalletRepository
-	SourceOfFundRepository r.SourceOfFundRepository
+	TransactionRepository  repository.TransactionRepository
+	WalletRepository       repository.WalletRepository
+	SourceOfFundRepository repository.SourceOfFundRepository
 }
 
 func NewTransactionService(c *TSConfig) TransactionService {
@@ -62,13 +62,14 @@ func (s *transactionService) TopUp(input *dto.TopUpRequestBody) (*model.Transact
 		return &model.Transaction{}, &custom_error.WalletNotFoundError{}
 	}
 
-	transaction := &model.Transaction{}
-	transaction.SourceOfFundID = &sourceOfFund.ID
-	transaction.UserID = input.User.ID
-	transaction.DestinationID = wallet.ID
-	transaction.Amount = input.Amount
-	transaction.Description = "Top Up from " + sourceOfFund.Name
-	transaction.Category = "Top Up"
+	transaction := &model.Transaction{
+		SourceOfFundID: &sourceOfFund.ID,
+		UserID:         input.User.ID,
+		DestinationID:  wallet.ID,
+		Amount:         input.Amount,
+		Description:    "Top Up from " + sourceOfFund.Name,
+		Category:       "Top Up",
+	}
 
 	transaction, err = s.transactionRepository.Save(transaction)
 	if err != nil {
@@ -122,12 +123,13 @@ func (s *transactionService) Transfer(input *dto.TransferRequestBody) (*model.Tr
 	}
 
 	//create transaction for receiver
-	transaction := &model.Transaction{}
-	transaction.UserID = destinationWallet.User.ID
-	transaction.DestinationID = myWallet.ID
-	transaction.Amount = input.Amount
-	transaction.Description = input.Description
-	transaction.Category = "Receive Money"
+	transaction := &model.Transaction{
+		UserID:        destinationWallet.User.ID,
+		DestinationID: myWallet.ID,
+		Amount:        input.Amount,
+		Description:   input.Description,
+		Category:      "Receive Money",
+	}
 
 	transaction, err = s.transactionRepository.Save(transaction)
 	if err != nil {
@@ -135,12 +137,13 @@ func (s *transactionService) Transfer(input *dto.TransferRequestBody) (*model.Tr
 	}
 
 	// create transaction for sender
-	transaction = &model.Transaction{}
-	transaction.UserID = input.User.ID
-	transaction.DestinationID = destinationWallet.ID
-	transaction.Amount = input.Amount
-	transaction.Description = input.Description
-	transaction.Category = "Send Money"
+	transaction = &model.Transaction{
+		UserID:        input.User.ID,
+		DestinationID: destinationWallet.ID,
+		Amount:        input.Amount,
+		Description:   input.Description,
+		Category:      "Send Money",
+	}
 
 	transaction, err = s.transactionRepository.Save(transaction)
 	if err != nil {

@@ -53,7 +53,7 @@ func (r *userRepository) FindById(id int) (*model.User, error) {
 func (r *userRepository) FindByName(name string) ([]*model.User, error) {
 	var users []*model.User
 
-	err := r.db.Where("name ILIKE ?", "%"+name+"%").Find(&users).Error
+	err := r.db.Where("name LIKE ?", "%"+name+"%").Find(&users).Error
 	if err != nil {
 		return users, err
 	}
