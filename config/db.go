@@ -19,7 +19,7 @@ func init() {
 		log.Fatal(err)
 	}
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASS"),
 		os.Getenv("DB_HOST"),
