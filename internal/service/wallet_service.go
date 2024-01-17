@@ -5,7 +5,6 @@ import (
 	"wallet/internal/model"
 	"wallet/internal/repository"
 	"wallet/pkg/custom_error"
-	"wallet/pkg/utils"
 )
 
 type WalletService interface {
@@ -55,9 +54,11 @@ func (s *walletService) CreateWallet(input *dto.WalletRequestBody) (*model.Walle
 		return &model.Wallet{}, &custom_error.WalletAlreadyExistsError{}
 	}
 
-	wallet.UserID = user.ID
-	wallet.Number = utils.GenerateWalletNumber(user.ID)
-	wallet.Balance = 0
+	wallet = &model.Wallet{
+		UserID:  user.ID,
+		Number:  user.PhoneNumber,
+		Balance: 0,
+	}
 
 	newWallet, err := s.walletRepository.Save(wallet)
 	if err != nil {
