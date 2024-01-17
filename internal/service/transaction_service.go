@@ -13,6 +13,7 @@ type TransactionService interface {
 	TopUp(input *dto.TopUpRequestBody) (*model.Transaction, error)
 	Transfer(input *dto.TransferRequestBody) (*model.Transaction, error)
 	CountTransaction(userID int) (int64, error)
+	WithDraw(input *dto.TransferRequestBody) (*model.Transaction, error)
 }
 
 type transactionService struct {
@@ -141,6 +142,64 @@ func (s *transactionService) Transfer(input *dto.TransferRequestBody) (*model.Tr
 		Amount:        input.Amount,
 		Description:   input.Description,
 		Category:      "Send Money",
+	}
+
+	transaction, err = s.transactionRepository.Save(transaction)
+	if err != nil {
+		return transaction, err
+	}
+
+	myWallet.Balance = myWallet.Balance - input.Amount
+	myWallet, err = s.walletRepository.Update(myWallet)
+	if err != nil {
+		return transaction, err
+	}
+
+	destinationWallet.Balance = destinationWallet.Balance + input.Amount
+	_, err = s.walletRepository.Update(destinationWallet)
+	if err != nil {
+		return transaction, err
+	}
+
+	balance := uint(myWallet.Balance)
+	transaction.SourceOfFundID = &balance
+	transaction.User = *input.User
+	transaction.Wallet = *destinationWallet
+
+	return transaction, nil
+}
+
+func (s *transactionService) WithDraw(input *dto.TransferRequestBody) (*model.Transaction, error) {
+	myWallet, err := s.walletRepository.FindByUserId(int(input.User.ID))
+	if err != nil {
+		return &model.Transaction{}, err
+	}
+	if myWallet.ID == 0 {
+		return &model.Transaction{}, &custom_error.WalletNotFoundError{}
+	}
+	if myWallet.Balance < input.Amount {
+		return &model.Transaction{}, &custom_error.InsufficientBallanceError{}
+	}
+	number := strconv.Itoa(input.WalletNumber)
+	if myWallet.Number == number {
+		return &model.Transaction{}, &custom_error.TransferToSameWalletError{}
+	}
+
+	destinationWallet, err := s.walletRepository.FindByNumber(number)
+	if err != nil {
+		return &model.Transaction{}, err
+	}
+	if destinationWallet.ID == 0 {
+		return &model.Transaction{}, &custom_error.WalletNotFoundError{}
+	}
+
+	// create transaction for sender
+	transaction := &model.Transaction{
+		UserID:        input.User.ID,
+		DestinationID: destinationWallet.ID,
+		Amount:        input.Amount,
+		Description:   input.Description,
+		Category:      "WithDraw Money",
 	}
 
 	transaction, err = s.transactionRepository.Save(transaction)

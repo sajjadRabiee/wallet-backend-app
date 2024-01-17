@@ -92,6 +92,18 @@ func FormatTransfer(transaction *model.Transaction) TransferResponse {
 	}
 }
 
+func FormatWithDraw(transaction *model.Transaction) TransferResponse {
+	return TransferResponse{
+		ID:            transaction.ID,
+		Amount:        transaction.Amount,
+		WalletBalance: int(*transaction.SourceOfFundID),
+		Description:   transaction.Description,
+		Category:      transaction.Category,
+		CreatedAt:     transaction.CreatedAt,
+		UpdatedAt:     transaction.UpdatedAt,
+	}
+}
+
 func FormatTransaction(transaction *model.Transaction) TransactionResponse {
 	var sourceOfFund string
 	if transaction.SourceOfFund != nil {
