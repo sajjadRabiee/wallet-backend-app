@@ -26,6 +26,8 @@ services:
       - "8080:8080"
     networks:
       - wallet_default
+    depends_on:
+      - mysql
 
 networks:
   wallet_default:
