@@ -1,15 +1,15 @@
 package route
 
-import s "wallet/internal/service"
+import "wallet/internal/service"
 
 type Router struct {
-	userService s.UserService
-	jwtService  s.JWTService
+	userService service.UserService
+	jwtService  service.JWTService
 }
 
 type RouterConfig struct {
-	UserService s.UserService
-	JWTService  s.JWTService
+	UserService service.UserService
+	JWTService  service.JWTService
 }
 
 func NewRouter(c *RouterConfig) *Router {
