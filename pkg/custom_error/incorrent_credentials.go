@@ -4,5 +4,5 @@ type IncorrectCredentialsError struct {
 }
 
 func (e *IncorrectCredentialsError) Error() string {
-	return "incorrect email or password"
+	return "incorrect phone_number or password"
 }

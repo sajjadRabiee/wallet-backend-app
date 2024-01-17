@@ -35,13 +35,13 @@ func (_m *UserRepository) FindAll() ([]*model.User, error) {
 	return r0, r1
 }
 
-// FindByEmail provides a mock function with given fields: email
-func (_m *UserRepository) FindByEmail(email string) (*model.User, error) {
-	ret := _m.Called(email)
+// FindByPhoneNumber provides a mock function with given fields: phone_number
+func (_m *UserRepository) FindByPhoneNumber(phoneNumber string) (*model.User, error) {
+	ret := _m.Called(phoneNumber)
 
 	var r0 *model.User
 	if rf, ok := ret.Get(0).(func(string) *model.User); ok {
-		r0 = rf(email)
+		r0 = rf(phoneNumber)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*model.User)
@@ -50,7 +50,7 @@ func (_m *UserRepository) FindByEmail(email string) (*model.User, error) {
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(email)
+		r1 = rf(phoneNumber)
 	} else {
 		r1 = ret.Error(1)
 	}

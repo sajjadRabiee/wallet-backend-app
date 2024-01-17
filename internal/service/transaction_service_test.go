@@ -61,8 +61,8 @@ func Test_transactionService_GetTransactions(t *testing.T) {
 		sourceOfFundID := uint(1)
 		transactionRepository.Mock.On("FindAll", 1, &dto.TransactionRequestQuery{}).
 			Return([]*model.Transaction{{ID: 1, SourceOfFundID: &sourceOfFundID, SourceOfFund: &model.SourceOfFund{ID: 1, Name: "Cash"},
-				UserID: 1, User: model.User{ID: 1, Name: "nabil", Email: "nabil@user.com"},
-				DestinationID: 1, Wallet: model.Wallet{ID: 1, UserID: 1, User: model.User{ID: 1, Name: "nabil", Email: "nabil@user.com"}, Number: "100001", Balance: 10000},
+				UserID: 1, User: model.User{ID: 1, Name: "nabil", PhoneNumber: "+989123456789"},
+				DestinationID: 1, Wallet: model.Wallet{ID: 1, UserID: 1, User: model.User{ID: 1, Name: "nabil", PhoneNumber: "+989123456789"}, Number: "100001", Balance: 10000},
 				Amount: 50000, Description: "Top up from cash", Category: "Top Up", CreatedAt: time.Now(), UpdatedAt: time.Now()}}, nil).
 			Once()
 
@@ -148,7 +148,7 @@ func Test_transactionService_Transfer(t *testing.T) {
 		myWallet := &model.Wallet{ID: 1, UserID: 1, Number: "1000001", Balance: 99999999}
 		walletRepository.Mock.On("FindByUserId", 1).Return(myWallet, nil).Once()
 
-		destinationWallet := &model.Wallet{ID: 2, UserID: 2, User: model.User{ID: 2, Name: "mario", Email: "mario@gmail.com"},
+		destinationWallet := &model.Wallet{ID: 2, UserID: 2, User: model.User{ID: 2, Name: "mario", PhoneNumber: "mario@gmail.com"},
 			Number: "100002", Balance: 1000000}
 		walletRepository.Mock.On("FindByNumber", "100002").Return(destinationWallet, nil).Once()
 
@@ -165,7 +165,7 @@ func Test_transactionService_Transfer(t *testing.T) {
 		input.Amount = 500000
 		input.Description = "beli somay dek"
 		input.WalletNumber = 100002
-		input.User = &model.User{ID: 1, Name: "nabil", Email: "nabil@user.com"}
+		input.User = &model.User{ID: 1, Name: "nabil", PhoneNumber: "+989123456789"}
 		transactions, err := transactionService.Transfer(input)
 
 		assert.Nil(t, err)

@@ -3,18 +3,18 @@ package dto
 import "wallet/internal/model"
 
 type LoginRequestBody struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=5"`
+	PhoneNumber string `json:"phone_number" binding:"required"`
+	Password    string `json:"password" binding:"required,min=5"`
 }
 
 type RegisterRequestBody struct {
-	Name     string `json:"name" binding:"required,alphanum"`
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=5"`
+	Name        string `json:"name" binding:"required,alphanum"`
+	PhoneNumber string `json:"phone_number" binding:"required"`
+	Password    string `json:"password" binding:"required,min=5"`
 }
 
 type ForgotPasswordRequestBody struct {
-	Email string `json:"email" binding:"required,email"`
+	PhoneNumber string `json:"phone_number" binding:"required"`
 }
 
 type ResetPasswordRequestBody struct {
@@ -24,14 +24,14 @@ type ResetPasswordRequestBody struct {
 }
 
 type ForgotPasswordResponseBody struct {
-	Email string `json:"email"`
-	Token string `json:"token"`
+	PhoneNumber string `json:"phone_number"`
+	Token       string `json:"token"`
 }
 
 type LoginResponseBody struct {
 	ID           uint   `json:"id"`
 	Name         string `json:"name"`
-	Email        string `json:"email"`
+	PhoneNumber  string `json:"phone_number"`
 	WalletNumber string `json:"wallet"`
 	Token        string `json:"token"`
 }
@@ -40,7 +40,7 @@ func FormatLogin(user *model.User, wallet *model.Wallet, token string) LoginResp
 	return LoginResponseBody{
 		ID:           user.ID,
 		Name:         user.Name,
-		Email:        user.Email,
+		PhoneNumber:  user.PhoneNumber,
 		WalletNumber: wallet.Number,
 		Token:        token,
 	}
@@ -48,7 +48,7 @@ func FormatLogin(user *model.User, wallet *model.Wallet, token string) LoginResp
 
 func FormatForgotPassword(passwordReset *model.PasswordReset) ForgotPasswordResponseBody {
 	return ForgotPasswordResponseBody{
-		Email: passwordReset.User.Email,
-		Token: passwordReset.Token,
+		PhoneNumber: passwordReset.User.PhoneNumber,
+		Token:       passwordReset.Token,
 	}
 }

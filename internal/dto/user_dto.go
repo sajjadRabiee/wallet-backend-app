@@ -9,21 +9,21 @@ type UserRequestParams struct {
 }
 
 type UserRequestQuery struct {
-	Name  string `form:"name"`
-	Email string `form:"email"`
+	Name        string `form:"name"`
+	PhoneNumber string `form:"phone_number"`
 }
 
 type UserResponseBody struct {
-	ID    uint   `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID          uint   `json:"id"`
+	Name        string `json:"name"`
+	PhoneNumber string `json:"phone_number"`
 }
 
 func FormatUser(user *model.User) UserResponseBody {
 	formattedUser := UserResponseBody{}
 	formattedUser.ID = user.ID
 	formattedUser.Name = user.Name
-	formattedUser.Email = user.Email
+	formattedUser.PhoneNumber = user.PhoneNumber
 	return formattedUser
 }
 
@@ -37,17 +37,17 @@ func FormatUsers(authors []*model.User) []UserResponseBody {
 }
 
 type UserDetailResponse struct {
-	ID     uint           `json:"id"`
-	Name   string         `json:"name"`
-	Email  string         `json:"email"`
-	Wallet WalletResponse `json:"wallet"`
+	ID          uint           `json:"id"`
+	Name        string         `json:"name"`
+	PhoneNumber string         `json:"phone_number"`
+	Wallet      WalletResponse `json:"wallet"`
 }
 
 func FormatUserDetail(user *model.User, wallet *model.Wallet) UserDetailResponse {
 	formattedUser := UserDetailResponse{}
 	formattedUser.ID = user.ID
 	formattedUser.Name = user.Name
-	formattedUser.Email = user.Email
+	formattedUser.PhoneNumber = user.PhoneNumber
 	formattedUser.Wallet = FormatWallet(wallet)
 	return formattedUser
 }

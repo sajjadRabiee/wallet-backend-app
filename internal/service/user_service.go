@@ -1,8 +1,6 @@
 package service
 
 import (
-	"net/mail"
-
 	"golang.org/x/crypto/bcrypt"
 	"wallet/internal/dto"
 	"wallet/internal/model"
@@ -41,12 +39,7 @@ func (s *userService) GetUser(input *dto.UserRequestParams) (*model.User, error)
 }
 
 func (s *userService) CreateUser(input *dto.RegisterRequestBody) (*model.User, error) {
-	_, err := mail.ParseAddress(input.Email)
-	if err != nil {
-		return &model.User{}, &custom_error.NotValidEmailError{}
-	}
-
-	user, err := s.userRepository.FindByEmail(input.Email)
+	user, err := s.userRepository.FindByPhoneNumber(input.PhoneNumber)
 	if err != nil {
 		return user, err
 	}
@@ -55,7 +48,7 @@ func (s *userService) CreateUser(input *dto.RegisterRequestBody) (*model.User, e
 	}
 
 	user.Name = input.Name
-	user.Email = input.Email
+	user.PhoneNumber = input.PhoneNumber
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 	if err != nil {
 		return user, err

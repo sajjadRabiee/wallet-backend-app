@@ -1,7 +1,6 @@
 package service
 
 import (
-	"net/mail"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -36,12 +35,7 @@ func NewAuthService(c *ASConfig) AuthService {
 }
 
 func (s *authService) Attempt(input *dto.LoginRequestBody) (*model.User, error) {
-	_, err := mail.ParseAddress(input.Email)
-	if err != nil {
-		return &model.User{}, &custom_error.NotValidEmailError{}
-	}
-
-	user, err := s.userRepository.FindByEmail(input.Email)
+	user, err := s.userRepository.FindByPhoneNumber(input.PhoneNumber)
 	if err != nil {
 		return user, err
 	}
@@ -59,12 +53,8 @@ func (s *authService) Attempt(input *dto.LoginRequestBody) (*model.User, error) 
 }
 
 func (s *authService) ForgotPass(input *dto.ForgotPasswordRequestBody) (*model.PasswordReset, error) {
-	_, err := mail.ParseAddress(input.Email)
-	if err != nil {
-		return &model.PasswordReset{}, &custom_error.NotValidEmailError{}
-	}
 
-	user, err := s.userRepository.FindByEmail(input.Email)
+	user, err := s.userRepository.FindByPhoneNumber(input.PhoneNumber)
 	if err != nil {
 		return &model.PasswordReset{}, err
 	}
@@ -98,7 +88,7 @@ func (s *authService) ResetPass(input *dto.ResetPasswordRequestBody) (*model.Pas
 		return passwordReset, err
 	}
 
-	if passwordReset.User.Email == "" {
+	if passwordReset.User.PhoneNumber == "" {
 		return passwordReset, &custom_error.ResetTokenNotFound{}
 	}
 
