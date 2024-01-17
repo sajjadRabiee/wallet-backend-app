@@ -81,6 +81,29 @@ func (_m *TransactionService) TopUp(input *dto.TopUpRequestBody) (*model.Transac
 	return r0, r1
 }
 
+// WithDraw provides a mock function with given fields: input
+func (_m *TransactionService) WithDraw(input *dto.TransferRequestBody) (*model.Transaction, error) {
+	ret := _m.Called(input)
+
+	var r0 *model.Transaction
+	if rf, ok := ret.Get(0).(func(*dto.TransferRequestBody) *model.Transaction); ok {
+		r0 = rf(input)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Transaction)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*dto.TransferRequestBody) error); ok {
+		r1 = rf(input)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Transfer provides a mock function with given fields: input
 func (_m *TransactionService) Transfer(input *dto.TransferRequestBody) (*model.Transaction, error) {
 	ret := _m.Called(input)

@@ -9,6 +9,8 @@ import (
 	"wallet/pkg/utils"
 )
 
+const mainWalletID = "main_wallet_id"
+
 func (h *Handler) GetTransactions(c *gin.Context) {
 	query := &dto.TransactionRequestQuery{}
 	err := c.ShouldBindQuery(query)
@@ -88,5 +90,30 @@ func (h *Handler) Transfer(c *gin.Context) {
 
 	formattedTransaction := dto.FormatTransfer(transaction)
 	response := utils.SuccessResponse("transfer success", http.StatusOK, formattedTransaction)
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *Handler) WithDraw(c *gin.Context) {
+	input := &dto.TransferRequestBody{}
+	input.WalletNumber = c.MustGet(mainWalletID).(int)
+	err := c.ShouldBindJSON(input)
+	if err != nil {
+		errors := utils.FormatValidationError(err)
+		response := utils.ErrorResponse("withdraw failed", http.StatusUnprocessableEntity, errors)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	user := c.MustGet("user").(*model.User)
+	input.User = user
+	transaction, err := h.transactionService.WithDraw(input)
+	if err != nil {
+		statusCode := utils.GetStatusCode(err)
+		response := utils.ErrorResponse("withdraw failed", statusCode, err.Error())
+		c.JSON(statusCode, response)
+		return
+	}
+	formattedTransaction := dto.FormatWithDraw(transaction)
+	response := utils.SuccessResponse("withdraw success", http.StatusOK, formattedTransaction)
 	c.JSON(http.StatusOK, response)
 }
