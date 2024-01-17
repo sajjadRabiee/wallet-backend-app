@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -38,6 +39,7 @@ func main() {
 	routes := route.NewRouter(&route.RouterConfig{UserService: userService, JWTService: jwtService})
 
 	router := gin.Default()
+	router.Use(cors.Default())
 	router.Static("/docs", "./pkg/swaggerui")
 	router.NoRoute(h.NoRoute)
 

@@ -1,7 +1,7 @@
 # E-Wallet API
 
 ## Description
-This is a RESTful API of E-Wallet project. This project was built with golang, postgreSQL, and JWT authentication and implement clean architecture.
+This is a RESTful API of E-Wallet project. This project was built with golang, MySQL, and JWT authentication and implement clean architecture.
 
 ## Features
 1. General Features

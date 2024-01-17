@@ -17,6 +17,4 @@ COPY --from=builder /app/pkg/swaggerui ./pkg/swaggerui
 
 ENV GIN_MODE=release
 
-EXPOSE 8080
-
 CMD ["./e-wallet-api"]

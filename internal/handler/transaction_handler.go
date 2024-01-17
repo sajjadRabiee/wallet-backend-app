@@ -13,12 +13,10 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 	query := &dto.TransactionRequestQuery{}
 	err := c.ShouldBindQuery(query)
 	if err != nil {
-		if err != nil {
-			errors := utils.FormatValidationError(err)
-			response := utils.ErrorResponse("get transaction failed", http.StatusUnprocessableEntity, errors)
-			c.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+		errors := utils.FormatValidationError(err)
+		response := utils.ErrorResponse("get transaction failed", http.StatusUnprocessableEntity, errors)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 	query = dto.FormatQuery(query)
 
@@ -47,12 +45,10 @@ func (h *Handler) TopUp(c *gin.Context) {
 	input := &dto.TopUpRequestBody{}
 	err := c.ShouldBindJSON(input)
 	if err != nil {
-		if err != nil {
-			errors := utils.FormatValidationError(err)
-			response := utils.ErrorResponse("top up failed", http.StatusUnprocessableEntity, errors)
-			c.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+		errors := utils.FormatValidationError(err)
+		response := utils.ErrorResponse("top up failed", http.StatusUnprocessableEntity, errors)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	user := c.MustGet("user").(*model.User)
@@ -74,12 +70,10 @@ func (h *Handler) Transfer(c *gin.Context) {
 	input := &dto.TransferRequestBody{}
 	err := c.ShouldBindJSON(input)
 	if err != nil {
-		if err != nil {
-			errors := utils.FormatValidationError(err)
-			response := utils.ErrorResponse("transfer failed", http.StatusUnprocessableEntity, errors)
-			c.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+		errors := utils.FormatValidationError(err)
+		response := utils.ErrorResponse("transfer failed", http.StatusUnprocessableEntity, errors)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	user := c.MustGet("user").(*model.User)

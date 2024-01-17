@@ -4,7 +4,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"wallet/internal/dto"
 	"wallet/internal/model"
-	r "wallet/internal/repository"
+	"wallet/internal/repository"
 	"wallet/pkg/custom_error"
 )
 
@@ -14,13 +14,13 @@ type UserService interface {
 }
 
 type userService struct {
-	userRepository   r.UserRepository
-	walletRepository r.WalletRepository
+	userRepository   repository.UserRepository
+	walletRepository repository.WalletRepository
 }
 
 type USConfig struct {
-	UserRepository   r.UserRepository
-	WalletRepository r.WalletRepository
+	UserRepository   repository.UserRepository
+	WalletRepository repository.WalletRepository
 }
 
 func NewUserService(c *USConfig) UserService {
