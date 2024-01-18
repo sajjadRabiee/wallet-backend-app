@@ -111,6 +111,35 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/5XX'
+  /cards:
+    post:
+      tags:
+        - user
+      summary: Endpoint to add card number
+      description: Endpoint to add card number
+      requestBody:
+        description: Request body for add card
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                card_number:
+                  type: string
+                  example: 62215897456987456
+      responses:
+        '200':
+          $ref: '#/components/responses/profiles'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/5XX'
+      security:
+        - bearerAuth: [ ]
   /profiles:
     get:
       tags:
@@ -534,6 +563,27 @@ components:
                       balance:
                         type: integer
                         example: 118572000
+    cards:
+      description: get card detail success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/meta'
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  card_number:
+                    type: string
+                    example: 58598978965145
+                  user_id:
+                    type: integer
+                    example: 5
     transaction:
       description: get user detail success
       content:

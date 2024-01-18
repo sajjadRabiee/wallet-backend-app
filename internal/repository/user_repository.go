@@ -12,6 +12,7 @@ type UserRepository interface {
 	FindByPhoneNumber(phoneNumber string) (*model.User, error)
 	Save(user *model.User) (*model.User, error)
 	Update(user *model.User) (*model.User, error)
+	SaveCard(card *model.Card) (*model.Card, error)
 }
 
 type userRepository struct {
@@ -79,6 +80,15 @@ func (r *userRepository) Save(user *model.User) (*model.User, error) {
 	}
 
 	return user, nil
+}
+
+func (r *userRepository) SaveCard(card *model.Card) (*model.Card, error) {
+	err := r.db.Create(&card).Error
+	if err != nil {
+		return card, err
+	}
+
+	return card, nil
 }
 
 func (r *userRepository) Update(user *model.User) (*model.User, error) {

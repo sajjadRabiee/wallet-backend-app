@@ -4,6 +4,10 @@ import (
 	"wallet/internal/model"
 )
 
+type CardsBody struct {
+	CardNumber string `json:"card_number" binding:"required"`
+}
+
 type UserRequestParams struct {
 	UserID int `uri:"id" binding:"required"`
 }

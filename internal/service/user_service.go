@@ -11,6 +11,7 @@ import (
 type UserService interface {
 	GetUser(input *dto.UserRequestParams) (*model.User, error)
 	CreateUser(input *dto.RegisterRequestBody) (*model.User, error)
+	SaveCard(cardNumber string, userId uint) (*model.Card, error)
 }
 
 type userService struct {
@@ -61,4 +62,16 @@ func (s *userService) CreateUser(input *dto.RegisterRequestBody) (*model.User, e
 	}
 
 	return newUser, nil
+}
+
+func (s *userService) SaveCard(cardNumber string, userId uint) (*model.Card, error) {
+	card, err := s.userRepository.SaveCard(&model.Card{
+		CardNumber: cardNumber,
+		UserID:     userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return card, nil
 }
