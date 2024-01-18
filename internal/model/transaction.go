@@ -1,6 +1,7 @@
 package model
 
 import (
+	"strings"
 	"time"
 
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ type Transaction struct {
 	Amount         int
 	Description    string
 	Category       string
+	Type           string `gorm:"-"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	DeletedAt      gorm.DeletedAt `gorm:"index"`
@@ -24,4 +26,14 @@ type Transaction struct {
 
 func (Transaction) TableName() string {
 	return "transactions"
+}
+
+func (t *Transaction) AfterFind(tx *gorm.DB) (err error) {
+	if strings.Contains(t.Category, "Receive") || strings.Contains(t.Category, "Top") {
+		t.Type = "+"
+	}
+	if strings.Contains(t.Category, "Send") || strings.Contains(t.Category, "Withdraw") {
+		t.Type = "-"
+	}
+	return nil
 }

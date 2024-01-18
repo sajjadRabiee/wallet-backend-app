@@ -8,13 +8,13 @@ import (
 )
 
 type TopUpRequestBody struct {
-	Amount         int `json:"amount" binding:"required,min=50000,max=10000000"`
+	Amount         int `json:"amount" binding:"required,min=1000"`
 	SourceOfFundID int `json:"source_of_fund_id" binding:"required"`
 	User           *model.User
 }
 
 type TransferRequestBody struct {
-	Amount       int    `json:"amount" binding:"required,min=1000,max=50000000"`
+	Amount       int    `json:"amount" binding:"required,min=1000"`
 	WalletNumber int    `json:"wallet_number" binding:"required"`
 	Description  string `json:"description"`
 	User         *model.User
@@ -64,6 +64,7 @@ type TransactionResponse struct {
 	Category     string      `json:"category"`
 	CreatedAt    time.Time   `json:"created_at"`
 	UpdatedAt    time.Time   `json:"updated_at"`
+	Type         string      `json:"type"`
 }
 
 func FormatTopUp(transaction *model.Transaction) TopUpResponse {
@@ -118,6 +119,7 @@ func FormatTransaction(transaction *model.Transaction) TransactionResponse {
 		Category:     transaction.Category,
 		CreatedAt:    transaction.CreatedAt,
 		UpdatedAt:    transaction.UpdatedAt,
+		Type:         transaction.Type,
 	}
 }
 
