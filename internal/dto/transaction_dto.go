@@ -64,6 +64,7 @@ type TransactionResponse struct {
 	Category     string      `json:"category"`
 	CreatedAt    time.Time   `json:"created_at"`
 	UpdatedAt    time.Time   `json:"updated_at"`
+	Type         string      `json:"type"`
 }
 
 func FormatTopUp(transaction *model.Transaction) TopUpResponse {
@@ -118,6 +119,7 @@ func FormatTransaction(transaction *model.Transaction) TransactionResponse {
 		Category:     transaction.Category,
 		CreatedAt:    transaction.CreatedAt,
 		UpdatedAt:    transaction.UpdatedAt,
+		Type:         transaction.Type,
 	}
 }
 
