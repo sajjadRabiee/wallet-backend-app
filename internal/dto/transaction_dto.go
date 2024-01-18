@@ -132,7 +132,7 @@ func FormatTransactions(transactions []*model.Transaction) []TransactionResponse
 
 func FormatQuery(query *TransactionRequestQuery) *TransactionRequestQuery {
 	if query.Limit == 0 {
-		query.Limit = 10
+		query.Limit = 100
 	}
 	if query.Page == 0 {
 		query.Page = 1
