@@ -8,33 +8,41 @@ import (
 )
 
 type WalletService interface {
-	GetWalletByUserId(input *dto.WalletRequestBody) (*model.Wallet, error)
+	GetCardWalletByUserId(input *dto.WalletRequestBody) (*model.Wallet, []model.Card, error)
 	CreateWallet(user *model.User) (*model.Wallet, error)
 }
 
 type walletService struct {
 	userRepository   repository.UserRepository
 	walletRepository repository.WalletRepository
+	cardRepository   repository.CardRepository
 }
 
 type WSConfig struct {
 	UserRepository   repository.UserRepository
 	WalletRepository repository.WalletRepository
+	CardRepository   repository.CardRepository
 }
 
 func NewWalletService(c *WSConfig) WalletService {
 	return &walletService{
 		userRepository:   c.UserRepository,
 		walletRepository: c.WalletRepository,
+		cardRepository:   c.CardRepository,
 	}
 }
 
-func (s *walletService) GetWalletByUserId(input *dto.WalletRequestBody) (*model.Wallet, error) {
+func (s *walletService) GetCardWalletByUserId(input *dto.WalletRequestBody) (*model.Wallet, []model.Card, error) {
 	wallet, err := s.walletRepository.FindByUserId(input.UserID)
 	if err != nil {
-		return wallet, err
+		return nil, nil, err
 	}
-	return wallet, nil
+
+	cards, err := s.cardRepository.FindByUserId(input.UserID)
+	if err != nil {
+		return wallet, nil, err
+	}
+	return wallet, cards, nil
 }
 
 func (s *walletService) CreateWallet(user *model.User) (*model.Wallet, error) {

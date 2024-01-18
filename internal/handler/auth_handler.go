@@ -47,7 +47,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	formattedLogin := dto.FormatLogin(newUser, newWallet, token)
+	formattedLogin := dto.FormatLogin(newUser, newWallet, nil, token)
 	response := utils.SuccessResponse("register success", http.StatusOK, formattedLogin)
 	c.JSON(http.StatusOK, response)
 }
@@ -73,7 +73,7 @@ func (h *Handler) Login(c *gin.Context) {
 
 	inputWallet := &dto.WalletRequestBody{}
 	inputWallet.UserID = int(loggedinUser.ID)
-	wallet, err := h.walletService.GetWalletByUserId(inputWallet)
+	wallet, cards, err := h.walletService.GetCardWalletByUserId(inputWallet)
 	if err != nil {
 		response := utils.ErrorResponse(loginFailedMessage, http.StatusInternalServerError, err.Error())
 		c.JSON(http.StatusInternalServerError, response)
@@ -87,7 +87,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	formattedLogin := dto.FormatLogin(loggedinUser, wallet, token)
+	formattedLogin := dto.FormatLogin(loggedinUser, wallet, cards, token)
 	response := utils.SuccessResponse("login success", http.StatusOK, formattedLogin)
 	c.JSON(http.StatusOK, response)
 }

@@ -45,13 +45,15 @@ type UserDetailResponse struct {
 	Name        string         `json:"name"`
 	PhoneNumber string         `json:"phone_number"`
 	Wallet      WalletResponse `json:"wallet"`
+	Cards       []CardResponse `json:"cards"`
 }
 
-func FormatUserDetail(user *model.User, wallet *model.Wallet) UserDetailResponse {
-	formattedUser := UserDetailResponse{}
-	formattedUser.ID = user.ID
-	formattedUser.Name = user.Name
-	formattedUser.PhoneNumber = user.PhoneNumber
-	formattedUser.Wallet = FormatWallet(wallet)
-	return formattedUser
+func FormatUserDetail(user *model.User, wallet *model.Wallet, cards []model.Card) UserDetailResponse {
+	return UserDetailResponse{
+		ID:          user.ID,
+		Name:        user.Name,
+		PhoneNumber: user.PhoneNumber,
+		Wallet:      FormatWallet(wallet),
+		Cards:       mapCardsModelToCardResponse(cards),
+	}
 }

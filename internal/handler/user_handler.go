@@ -14,14 +14,14 @@ func (h *Handler) Profile(c *gin.Context) {
 
 	input := &dto.WalletRequestBody{}
 	input.UserID = int(user.ID)
-	wallet, err := h.walletService.GetWalletByUserId(input)
+	wallet, cards, err := h.walletService.GetCardWalletByUserId(input)
 	if err != nil {
 		response := utils.ErrorResponse("show profile failed", http.StatusInternalServerError, err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	formattedUser := dto.FormatUserDetail(user, wallet)
+	formattedUser := dto.FormatUserDetail(user, wallet, cards)
 	response := utils.SuccessResponse("show profile success", http.StatusOK, formattedUser)
 	c.JSON(http.StatusOK, response)
 }

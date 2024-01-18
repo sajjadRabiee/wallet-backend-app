@@ -18,13 +18,14 @@ func main() {
 
 	userRepository := repository.NewUserRepository(&repository.URConfig{DB: db})
 	walletRepository := repository.NewWalletRepository(&repository.WRConfig{DB: db})
+	cardRepository := repository.NewCardRepository(&repository.CDConfig{DB: db})
 	passwordResetRepository := repository.NewPasswordResetRepository(&repository.PRConfig{DB: db})
 	sourceOfFundRepository := repository.NewSourceOfFundRepository(&repository.SRConfig{DB: db})
 	transactionRepository := repository.NewTransactionRepository(&repository.TRConfig{DB: db})
 
 	userService := service.NewUserService(&service.USConfig{UserRepository: userRepository})
 	authService := service.NewAuthService(&service.ASConfig{UserRepository: userRepository, PasswordResetRepository: passwordResetRepository})
-	walletService := service.NewWalletService(&service.WSConfig{UserRepository: userRepository, WalletRepository: walletRepository})
+	walletService := service.NewWalletService(&service.WSConfig{UserRepository: userRepository, WalletRepository: walletRepository, CardRepository: cardRepository})
 	transactionService := service.NewTransactionService(&service.TSConfig{TransactionRepository: transactionRepository, SourceOfFundRepository: sourceOfFundRepository, WalletRepository: walletRepository})
 	jwtService := service.NewJWTService(&service.JWTSConfig{})
 
