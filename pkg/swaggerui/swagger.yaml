@@ -55,6 +55,31 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/5XX'
+  /withdraw:
+    post:
+      tags:
+        - transaction
+      summary: Endpoint to withdraw account
+      description: Endpoint to withdraw account
+      requestBody:
+        description: Request body for withdraw
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  example: 5000
+      responses:
+        '200':
+          $ref: '#/components/responses/transaction'
+        '400':
+          $ref: '#/components/responses/400'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/5XX'
   /forgot-password:
     post:
       tags:
@@ -371,6 +396,13 @@ components:
           type: integer
           minimum: 1
           example: 1
+        cards:
+          items:
+            type: object
+            properties:
+              card_number:
+                type: string
+                example: "6037-9966-7788-1122"
         name:
           type: string
           example: brondol
@@ -468,6 +500,21 @@ components:
             required:
               - amount
               - wallet_number
+    withdraw:
+      description: Request body for withdraw
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: integer
+                example: 65000
+              description:
+                type: string
+                example: "SNAPPFOOD"
+            required:
+              - amount
   responses:
     signIn:
       description: login success
@@ -545,6 +592,13 @@ components:
                   id:
                     type: integer
                     example: 1
+                  cards:
+                    items:
+                      type: object
+                      properties:
+                        card_number:
+                          type: string
+                          example: "6037-9966-7788-1122"
                   name:
                     type: string
                     example: brondol
@@ -665,6 +719,48 @@ components:
                   total:
                     type: integer
                     example: 28
+    withdraw:
+      description: withdraw account
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/meta'
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 25
+                  destination:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: mario
+                      number:
+                        type: string
+                        number: 100002
+                  amount:
+                    type: integer
+                    example: 10000
+                  balance:
+                    type: integer
+                    example: 1090000
+                  description:
+                    type: string
+                    example: "bayar hutang"
+                  category:
+                    type: string
+                    example: "WithDraw acount"
+                  created_at:
+                    type: string
+                    example: "2022-09-09T13:01:23.11364106+07:00"
+                  updated_at:
+                    type: string
+                    example: "2022-09-09T13:01:23.11364106+07:00"
     topUp:
       description: top up success
       content:
