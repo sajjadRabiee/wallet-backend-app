@@ -93,7 +93,7 @@ func FormatTransfer(transaction *model.Transaction) TransferResponse {
 	}
 }
 
-func FormatWithDraw(transaction *model.Transaction) TransferResponse {
+func FormatWithdraw(transaction *model.Transaction) TransferResponse {
 	return TransferResponse{
 		ID:            transaction.ID,
 		Amount:        transaction.Amount,

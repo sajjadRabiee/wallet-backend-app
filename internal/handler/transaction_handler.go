@@ -93,7 +93,7 @@ func (h *Handler) Transfer(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func (h *Handler) WithDraw(c *gin.Context) {
+func (h *Handler) Withdraw(c *gin.Context) {
 	input := &dto.TransferRequestBody{}
 	input.WalletNumber = c.MustGet(mainWalletID).(int)
 	err := c.ShouldBindJSON(input)
@@ -106,14 +106,14 @@ func (h *Handler) WithDraw(c *gin.Context) {
 
 	user := c.MustGet("user").(*model.User)
 	input.User = user
-	transaction, err := h.transactionService.WithDraw(input)
+	transaction, err := h.transactionService.Withdraw(input)
 	if err != nil {
 		statusCode := utils.GetStatusCode(err)
 		response := utils.ErrorResponse("withdraw failed", statusCode, err.Error())
 		c.JSON(statusCode, response)
 		return
 	}
-	formattedTransaction := dto.FormatWithDraw(transaction)
+	formattedTransaction := dto.FormatWithdraw(transaction)
 	response := utils.SuccessResponse("withdraw success", http.StatusOK, formattedTransaction)
 	c.JSON(http.StatusOK, response)
 }
