@@ -9,8 +9,12 @@ type CardResponse struct {
 func mapCardsModelToCardResponse(cards []model.Card) []CardResponse {
 	res := make([]CardResponse, len(cards))
 	for i, c := range cards {
+		var cartNumber = c.CardNumber
+		if len(c.CardNumber) > 16 {
+			cartNumber = c.CardNumber[:15]
+		}
 		res[i] = CardResponse{
-			CardNumber: c.CardNumber,
+			CardNumber: cartNumber,
 		}
 	}
 	return res
